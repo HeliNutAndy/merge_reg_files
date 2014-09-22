@@ -1,0 +1,47 @@
+/*
+ * Tiny class to log any issues we may encounter
+ * Author: Andrew Zaluski
+ * Date: 9/19/2012
+ */
+
+package main;
+
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
+public class Logging {
+	
+	Logger logger;
+	String logRef = "CSVMergeMonthly";
+	
+	Logging(){	
+		getLogger();
+		
+	    try {
+	    	FileHandler fh = new FileHandler("CSVMergeMonthly.log", true);
+	        logger.addHandler(fh);
+	        logger.setLevel(Level.ALL);
+	        SimpleFormatter formatter = new SimpleFormatter();
+	        fh.setFormatter(formatter);
+
+	      } catch (SecurityException e) {
+	        e.printStackTrace();
+	      } catch (IOException e) {
+	        e.printStackTrace();
+	      }
+	}
+	
+	public void getLogger(){
+		logger = Logger.getLogger(logRef);
+	}
+	
+	public void writeToLog(String output, String sourceClass, String sourceMethod){
+		//logger.log(Level.ALL, output);
+		logger.logp(Level.ALL, sourceClass, sourceMethod, output);
+		
+	}
+
+}

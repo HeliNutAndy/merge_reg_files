@@ -1,0 +1,642 @@
+
+package main;
+
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Date;
+
+
+/**
+ * @author azaluski
+ * Merge various CSV files from Harvard Apparatus Web Contacts/registrations
+ * 
+ * Example files that need to be merged
+ * 
+ * Catalog.2012-08-02.csv
+ * CatalogHAUK.2012-08-05.csv
+ * Contact.2012-08-01.csv
+ * ContactHAUK.2012-08-01.csv
+ * Manual.2012-08-19.csv
+ * ManualHAUK.2012-08-25.csv
+ * OnlineQuestion.2012-08-14.csv
+ * OnlineQuestionHAUK.2012-08-31.csv
+ * Registration.2012-08-01.csv
+ * RegistrationHAUK.2012-08-02.csv
+ *
+ */
+public class CSVMerge {
+	
+	//public static String csvSourceFolder = "C:/Projects/workspace/Combine_CSV_Files/Requests/";
+	//public static String csvDestinationFolder = "C:/Projects/workspace/Combine_CSV_Files/";
+	
+	public static String csvSourceFolder = "D:/Requests/";
+	public static String csvDestinationFolder = "Z:/";
+	
+	
+	@SuppressWarnings("deprecation")
+	public static void main(String[] args) throws IOException {
+		
+		mergeUsRegistrations();
+		mergeUkRegistrations();
+		mergeUsCatalogs();
+		mergeUkCatalogs();
+		mergeUsContacts();
+		mergeUkContacts();
+		mergeUsManuals();
+		mergeUkManuals();
+		mergeUsOnlineQuestions();
+		mergeUkOnlineQuestions();
+		System.out.println("File created.");
+	}
+	
+	private static void mergeUsRegistrations() throws IOException{
+		
+		Date dateFileStamp = new java.util.Date();
+		dateFileStamp.setDate(dateFileStamp.getDate());
+		DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");  
+		
+		String outputFile = csvDestinationFolder + "Weekly_UsRegistrations_" + formatDate.format(dateFileStamp) +".csv";
+		boolean headerRetrieved = false;
+		
+		CSVReader reader = null;
+		FileReader sourceFileReader = null;
+	
+		int numDays = 7;
+		do{
+			
+			Date dateStamp = new java.util.Date();
+			dateStamp.setDate(dateStamp.getDate()- numDays);
+			DateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");  
+			
+			String sourceFile = csvSourceFolder + "Registration." + myformat.format(dateStamp) + ".csv";
+
+			try{
+			sourceFileReader = new FileReader(sourceFile);
+			reader = new CSVReader(sourceFileReader);
+			} catch (IOException e) {
+				// File does not exist. Keep on moving....
+				e.printStackTrace();
+			}
+			
+			if(reader != null){
+				// use FileWriter constructor that specifies open for appending
+				CSVWriter csvOutput = null;
+				try {
+					csvOutput = new CSVWriter(new FileWriter(outputFile, true), ',');
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(headerRetrieved){
+					// This allows us to skip the header
+					reader.readNext();					
+				}
+				
+				//Set after first iteration
+				headerRetrieved = true;
+				
+				List<String[]> allElements = reader.readAll();
+				csvOutput.writeAll(allElements);
+				csvOutput.close();				
+			}
+			numDays--;
+		}
+		while(numDays > 0);
+	}
+	
+	private static void mergeUkRegistrations() throws IOException{
+		
+		Date dateFileStamp = new java.util.Date();
+		dateFileStamp.setDate(dateFileStamp.getDate());
+		DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");  
+		
+		String outputFile = csvDestinationFolder + "Weekly_UkRegistrations_" + formatDate.format(dateFileStamp) +".csv";
+		boolean headerRetrieved = false;
+		
+		CSVReader reader = null;
+		FileReader sourceFileReader = null;
+	
+		int numDays = 7;
+		do{
+			
+			Date dateStamp = new java.util.Date();
+			dateStamp.setDate(dateStamp.getDate()- numDays);
+			DateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");  
+			
+			String sourceFile = csvSourceFolder + "RegistrationHAUK." + myformat.format(dateStamp) + ".csv";
+
+			try{
+			sourceFileReader = new FileReader(sourceFile);
+			reader = new CSVReader(sourceFileReader);
+			} catch (IOException e) {
+				// File does not exist. Keep on moving....
+				e.printStackTrace();
+			}
+			
+			if(reader != null){
+				// use FileWriter constructor that specifies open for appending
+				CSVWriter csvOutput = null;
+				try {
+					csvOutput = new CSVWriter(new FileWriter(outputFile, true), ',');
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(headerRetrieved){
+					// This allows us to skip the header
+					reader.readNext();					
+				}
+				
+				//Set after first iteration
+				headerRetrieved = true;
+				
+				List<String[]> allElements = reader.readAll();
+				csvOutput.writeAll(allElements);
+				csvOutput.close();				
+			}
+			numDays--;
+		}
+		while(numDays > 0);
+	}
+	
+	private static void mergeUsCatalogs() throws IOException{
+		
+		Date dateFileStamp = new java.util.Date();
+		dateFileStamp.setDate(dateFileStamp.getDate());
+		DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");  
+		
+		String outputFile = csvDestinationFolder + "Weekly_UsCatalogs_" + formatDate.format(dateFileStamp) +".csv";
+		boolean headerRetrieved = false;
+		
+		CSVReader reader = null;
+		FileReader sourceFileReader = null;
+	
+		int numDays = 7;
+		do{
+			
+			Date dateStamp = new java.util.Date();
+			dateStamp.setDate(dateStamp.getDate()- numDays);
+			DateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");  
+			
+			String sourceFile = csvSourceFolder + "Catalog." + myformat.format(dateStamp) + ".csv";
+
+			try{
+			sourceFileReader = new FileReader(sourceFile);
+			reader = new CSVReader(sourceFileReader);
+			} catch (IOException e) {
+				// File does not exist. Keep on moving....
+				e.printStackTrace();
+			}
+			
+			if(reader != null){
+				// use FileWriter constructor that specifies open for appending
+				CSVWriter csvOutput = null;
+				try {
+					csvOutput = new CSVWriter(new FileWriter(outputFile, true), ',');
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(headerRetrieved){
+					// This allows us to skip the header
+					reader.readNext();					
+				}
+				
+				//Set after first iteration
+				headerRetrieved = true;
+				
+				List<String[]> allElements = reader.readAll();
+				csvOutput.writeAll(allElements);
+				csvOutput.close();				
+			}
+			numDays--;
+		}
+		while(numDays > 0);
+	}
+	
+	private static void mergeUkCatalogs() throws IOException{
+		
+		Date dateFileStamp = new java.util.Date();
+		dateFileStamp.setDate(dateFileStamp.getDate());
+		DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");  
+		
+		String outputFile = csvDestinationFolder + "Weekly_UkCatalogs_" + formatDate.format(dateFileStamp) +".csv";
+		boolean headerRetrieved = false;
+		
+		CSVReader reader = null;
+		FileReader sourceFileReader = null;
+	
+		int numDays = 7;
+		do{
+			
+			Date dateStamp = new java.util.Date();
+			dateStamp.setDate(dateStamp.getDate()- numDays);
+			DateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");  
+			
+			String sourceFile = csvSourceFolder + "CatalogHAUK." + myformat.format(dateStamp) + ".csv";
+
+			try{
+			sourceFileReader = new FileReader(sourceFile);
+			reader = new CSVReader(sourceFileReader);
+			} catch (IOException e) {
+				// File does not exist. Keep on moving....
+				e.printStackTrace();
+			}
+			
+			if(reader != null){
+				// use FileWriter constructor that specifies open for appending
+				CSVWriter csvOutput = null;
+				try {
+					csvOutput = new CSVWriter(new FileWriter(outputFile, true), ',');
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(headerRetrieved){
+					// This allows us to skip the header
+					reader.readNext();					
+				}
+				
+				//Set after first iteration
+				headerRetrieved = true;
+				
+				List<String[]> allElements = reader.readAll();
+				csvOutput.writeAll(allElements);
+				csvOutput.close();				
+			}
+			numDays--;
+		}
+		while(numDays > 0);
+	}
+	
+	private static void mergeUsContacts() throws IOException{
+		
+		Date dateFileStamp = new java.util.Date();
+		dateFileStamp.setDate(dateFileStamp.getDate());
+		DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");  
+		
+		String outputFile = csvDestinationFolder + "Weekly_UsContacts_" + formatDate.format(dateFileStamp) +".csv";
+		boolean headerRetrieved = false;
+		
+		CSVReader reader = null;
+		FileReader sourceFileReader = null;
+	
+		int numDays = 7;
+		do{
+			
+			Date dateStamp = new java.util.Date();
+			dateStamp.setDate(dateStamp.getDate()- numDays);
+			DateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");  
+			
+			String sourceFile = csvSourceFolder + "Contact." + myformat.format(dateStamp) + ".csv";
+
+			try{
+			sourceFileReader = new FileReader(sourceFile);
+			reader = new CSVReader(sourceFileReader);
+			} catch (IOException e) {
+				// File does not exist. Keep on moving....
+				e.printStackTrace();
+			}
+			
+			if(reader != null){
+				// use FileWriter constructor that specifies open for appending
+				CSVWriter csvOutput = null;
+				try {
+					csvOutput = new CSVWriter(new FileWriter(outputFile, true), ',');
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(headerRetrieved){
+					// This allows us to skip the header
+					reader.readNext();					
+				}
+				
+				//Set after first iteration
+				headerRetrieved = true;
+				
+				List<String[]> allElements = reader.readAll();
+				csvOutput.writeAll(allElements);
+				csvOutput.close();				
+			}
+			numDays--;
+		}
+		while(numDays > 0);
+	}
+	
+	private static void mergeUkContacts() throws IOException{
+		
+		Date dateFileStamp = new java.util.Date();
+		dateFileStamp.setDate(dateFileStamp.getDate());
+		DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");  
+		
+		String outputFile = csvDestinationFolder + "Weekly_UkContacts_" + formatDate.format(dateFileStamp) +".csv";
+		boolean headerRetrieved = false;
+		
+		CSVReader reader = null;
+		FileReader sourceFileReader = null;
+	
+		int numDays = 7;
+		do{
+			
+			Date dateStamp = new java.util.Date();
+			dateStamp.setDate(dateStamp.getDate()- numDays);
+			DateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");  
+			
+			String sourceFile = csvSourceFolder + "ContactHAUK." + myformat.format(dateStamp) + ".csv";
+
+			try{
+			sourceFileReader = new FileReader(sourceFile);
+			reader = new CSVReader(sourceFileReader);
+			} catch (IOException e) {
+				// File does not exist. Keep on moving....
+				e.printStackTrace();
+			}
+			
+			if(reader != null){
+				// use FileWriter constructor that specifies open for appending
+				CSVWriter csvOutput = null;
+				try {
+					csvOutput = new CSVWriter(new FileWriter(outputFile, true), ',');
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(headerRetrieved){
+					// This allows us to skip the header
+					reader.readNext();					
+				}
+				
+				//Set after first iteration
+				headerRetrieved = true;
+				
+				List<String[]> allElements = reader.readAll();
+				csvOutput.writeAll(allElements);
+				csvOutput.close();				
+			}
+			numDays--;
+		}
+		while(numDays > 0);
+	}
+	
+	private static void mergeUsManuals() throws IOException{
+		
+		Date dateFileStamp = new java.util.Date();
+		dateFileStamp.setDate(dateFileStamp.getDate());
+		DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");  
+		
+		String outputFile = csvDestinationFolder + "Weekly_UsManuals_" + formatDate.format(dateFileStamp) +".csv";
+		boolean headerRetrieved = false;
+		
+		CSVReader reader = null;
+		FileReader sourceFileReader = null;
+	
+		int numDays = 7;
+		do{
+			
+			Date dateStamp = new java.util.Date();
+			dateStamp.setDate(dateStamp.getDate()- numDays);
+			DateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");  
+			
+			String sourceFile = csvSourceFolder + "Manual." + myformat.format(dateStamp) + ".csv";
+
+			try{
+			sourceFileReader = new FileReader(sourceFile);
+			reader = new CSVReader(sourceFileReader);
+			} catch (IOException e) {
+				// File does not exist. Keep on moving....
+				e.printStackTrace();
+			}
+			
+			if(reader != null){
+				// use FileWriter constructor that specifies open for appending
+				CSVWriter csvOutput = null;
+				try {
+					csvOutput = new CSVWriter(new FileWriter(outputFile, true), ',');
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(headerRetrieved){
+					// This allows us to skip the header
+					reader.readNext();					
+				}
+				
+				//Set after first iteration
+				headerRetrieved = true;
+				
+				List<String[]> allElements = reader.readAll();
+				csvOutput.writeAll(allElements);
+				csvOutput.close();				
+			}
+			numDays--;
+		}
+		while(numDays > 0);
+	}
+	
+	private static void mergeUkManuals() throws IOException{
+		
+		Date dateFileStamp = new java.util.Date();
+		dateFileStamp.setDate(dateFileStamp.getDate());
+		DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");  
+		
+		String outputFile = csvDestinationFolder + "Weekly_UkManuals_" + formatDate.format(dateFileStamp) +".csv";
+		boolean headerRetrieved = false;
+		
+		CSVReader reader = null;
+		FileReader sourceFileReader = null;
+	
+		int numDays = 7;
+		do{
+			
+			Date dateStamp = new java.util.Date();
+			dateStamp.setDate(dateStamp.getDate()- numDays);
+			DateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");  
+			
+			String sourceFile = csvSourceFolder + "ManualHAUK." + myformat.format(dateStamp) + ".csv";
+
+			try{
+			sourceFileReader = new FileReader(sourceFile);
+			reader = new CSVReader(sourceFileReader);
+			} catch (IOException e) {
+				// File does not exist. Keep on moving....
+				e.printStackTrace();
+			}
+			
+			if(reader != null){
+				// use FileWriter constructor that specifies open for appending
+				CSVWriter csvOutput = null;
+				try {
+					csvOutput = new CSVWriter(new FileWriter(outputFile, true), ',');
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(headerRetrieved){
+					// This allows us to skip the header
+					reader.readNext();					
+				}
+				
+				//Set after first iteration
+				headerRetrieved = true;
+				
+				List<String[]> allElements = reader.readAll();
+				csvOutput.writeAll(allElements);
+				csvOutput.close();				
+			}
+			numDays--;
+		}
+		while(numDays > 0);
+	}
+	
+	private static void mergeUsOnlineQuestions() throws IOException{
+		
+		Date dateFileStamp = new java.util.Date();
+		dateFileStamp.setDate(dateFileStamp.getDate());
+		DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");  
+		
+		String outputFile = csvDestinationFolder + "Weekly_UsOnlineQuestions_" + formatDate.format(dateFileStamp) +".csv";
+		boolean headerRetrieved = false;
+		
+		CSVReader reader = null;
+		FileReader sourceFileReader = null;
+	
+		int numDays = 7;
+		do{
+			
+			Date dateStamp = new java.util.Date();
+			dateStamp.setDate(dateStamp.getDate()- numDays);
+			DateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");  
+			
+			String sourceFile = csvSourceFolder + "OnlineQuestion." + myformat.format(dateStamp) + ".csv";
+
+			try{
+			sourceFileReader = new FileReader(sourceFile);
+			reader = new CSVReader(sourceFileReader);
+			} catch (IOException e) {
+				// File does not exist. Keep on moving....
+				e.printStackTrace();
+			}
+			
+			if(reader != null){
+				// use FileWriter constructor that specifies open for appending
+				CSVWriter csvOutput = null;
+				try {
+					csvOutput = new CSVWriter(new FileWriter(outputFile, true), ',');
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(headerRetrieved){
+					// This allows us to skip the header
+					reader.readNext();					
+				}
+				
+				//Set after first iteration
+				headerRetrieved = true;
+				
+				List<String[]> allElements = reader.readAll();
+				csvOutput.writeAll(allElements);
+				csvOutput.close();				
+			}
+			numDays--;
+		}
+		while(numDays > 0);
+	}
+	
+	private static void mergeUkOnlineQuestions() throws IOException{
+		
+		Date dateFileStamp = new java.util.Date();
+		dateFileStamp.setDate(dateFileStamp.getDate());
+		DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");  
+		
+		String outputFile = csvDestinationFolder + "Weekly_UkOnlineQuestions_" + formatDate.format(dateFileStamp) +".csv";
+		boolean headerRetrieved = false;
+		
+		CSVReader reader = null;
+		FileReader sourceFileReader = null;
+	
+		int numDays = 7;
+		do{
+			
+			Date dateStamp = new java.util.Date();
+			dateStamp.setDate(dateStamp.getDate()- numDays);
+			DateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");  
+			
+			String sourceFile = csvSourceFolder + "OnlineQuestionHAUK." + myformat.format(dateStamp) + ".csv";
+
+			try{
+			sourceFileReader = new FileReader(sourceFile);
+			reader = new CSVReader(sourceFileReader);
+			} catch (IOException e) {
+				// File does not exist. Keep on moving....
+				e.printStackTrace();
+			}
+			
+			if(reader != null){
+				// use FileWriter constructor that specifies open for appending
+				CSVWriter csvOutput = null;
+				try {
+					csvOutput = new CSVWriter(new FileWriter(outputFile, true), ',');
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(headerRetrieved){
+					// This allows us to skip the header
+					reader.readNext();					
+				}
+				
+				//Set after first iteration
+				headerRetrieved = true;
+				
+				List<String[]> allElements = reader.readAll();
+				csvOutput.writeAll(allElements);
+				csvOutput.close();				
+			}
+			numDays--;
+		}
+		while(numDays > 0);
+	}
+	
+	private void createDirectory(String directoryName)
+	{
+	  File theDir = new File(directoryName);
+
+	  // if the directory does not exist, create it
+	  if (!theDir.exists())
+	  {
+	    System.out.println("creating directory: " + directoryName);
+	    theDir.mkdir();
+	  }
+	}
+	
+	private String getTodaysDate(){
+		
+		Date dateFileStamp = new java.util.Date();
+		dateFileStamp.setDate(dateFileStamp.getDate());
+		DateFormat formatDate = new SimpleDateFormat("dd-MM-yyyy");  
+		
+		return formatDate.format(dateFileStamp);
+		
+	}
+	
+}

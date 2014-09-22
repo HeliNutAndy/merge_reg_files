@@ -1,0 +1,35 @@
+package main;
+
+import java.net.MalformedURLException;
+
+import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.SmbException;
+import jcifs.smb.SmbFile;
+
+
+public class NetworkFileHelper {
+	
+	private static NtlmPasswordAuthentication authentication;
+	
+	public void Connection(String url, String username, String password){
+		
+		//String url = "smb://ha-vnas-1.harvardapp.com/shared/Andy Zaluski/";
+		authentication = new NtlmPasswordAuthentication(null, "harvardapp\\azaluski", "A2cbs2pm");
+		try {
+			SmbFile dir = new SmbFile(url, authentication);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static NtlmPasswordAuthentication getAuthentication() {
+		return authentication;
+	}
+
+	public static void setAuthentication(NtlmPasswordAuthentication authentication) {
+		NetworkFileHelper.authentication = authentication;
+	}
+	
+
+}

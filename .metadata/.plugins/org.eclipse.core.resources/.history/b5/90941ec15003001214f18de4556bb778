@@ -1,0 +1,14 @@
+package main;
+
+import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.SmbException;
+import jcifs.smb.SmbFile;
+
+
+public class NetworkFileHelper {
+	
+	private static NtlmPasswordAuthentication authentication;
+
+	
+
+}

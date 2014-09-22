@@ -1,0 +1,128 @@
+package main;
+
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Date;
+import java.util.Calendar;
+
+import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.SmbException;
+import jcifs.smb.SmbFile;
+
+
+public class CSVMergeMonthly {
+
+	/**
+	 * @param args
+	 * @throws SmbException 
+	 * @throws MalformedURLException 
+	 */
+	
+	//Directory we are connecting to. Hopefully ;)
+	private static String sharedDir = "smb://ha-vnas-1.harvardapp.com/shared/Andy Zaluski/";
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		Logging Log = new Logging();
+		String decryptedPass = "";
+		Log.writeToLogP(CSVMergeMonthly.class.getName(), "main", "Monthly merge started.");
+		
+	    if (args.length == 0 || args.length ==1 || args.length > 2) {
+	    	Log.writeToLogP(CSVMergeMonthly.class.getName(), "main", "Missing or incorrect arguments.");
+			System.exit(0);
+	    } else {
+			NetworkFileHelper netHelper = new NetworkFileHelper(Log);
+			Encryption encObj = new Encryption();
+			decryptedPass = encObj.decrypt(args[1], 12);
+			
+			netHelper.Connection(sharedDir, args[0], decryptedPass);
+	    
+	        //System.out.println(args[0]);
+	        //System.out.println(args[1]);
+	    }
+	    
+	    String test = getPriorMonth();
+	    
+		getNumDaysMonth(getPriorMonthInt());
+	}
+	
+	public static int getNumDaysMonth(int month){
+		
+		Date dateFileStamp = new java.util.Date();
+		//dateFileStamp.setDate(dateFileStamp.getDate());
+		DateFormat formatDate = new SimpleDateFormat("yyyy-M-d");
+		
+		String date = formatDate.format(dateFileStamp);
+		
+		System.out.println("Formatted Date: " + date);
+		
+		String[] yearMonthDay;
+		  
+		/* delimiter */
+		String delimiter = "-";
+		/* given string will be split by the argument delimiter provided. */
+		yearMonthDay = date.split(delimiter);
+		
+		Calendar calendar = Calendar.getInstance();
+
+		calendar.set(Integer.parseInt(yearMonthDay[0]), Integer.parseInt(yearMonthDay[1]), Integer.parseInt(yearMonthDay[2]));
+		int days = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+		System.out.println("Number of Days: " + days);
+		  
+		return days;
+	}
+	
+	public static String getPriorMonth(){
+		
+		Date currentDate = new java.util.Date();
+		
+		//We require just the month
+		DateFormat formatDate = new SimpleDateFormat("M");
+		
+		String date = formatDate.format(currentDate);
+		
+		int month = Integer.parseInt(date);
+		
+		if(month == 1){
+			month = 12;
+		}
+		else{
+			month = month - 1;			
+		}
+		return new DateFormatSymbols().getMonths()[month-1];
+	}
+	
+	public static int getPriorMonthInt(){
+		
+		Date currentDate = new java.util.Date();
+		
+		//We require just the month
+		DateFormat formatDate = new SimpleDateFormat("M");
+		
+		String date = formatDate.format(currentDate);
+		
+		int month = Integer.parseInt(date);
+		
+		if(month == 1){
+			month = 12;
+		}
+		else{
+			month = month - 1;			
+		}
+		return month;
+	}
+	
+
+}
+

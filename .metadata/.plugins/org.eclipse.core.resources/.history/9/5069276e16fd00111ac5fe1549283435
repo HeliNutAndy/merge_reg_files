@@ -1,0 +1,94 @@
+
+package main;
+
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Date;
+
+
+/**
+ * @author azaluski
+ *
+ */
+public class CSVMerge {
+
+	
+	@SuppressWarnings("deprecation")
+	public static void main(String[] args) throws IOException {
+		
+		mergeUsRegistrations();
+		
+	}
+	
+	public static void mergeUsRegistrations() throws IOException{
+		
+		
+		
+		String outputFile = "C:/Projects/workspace/Combine_CSV_Files/Weekly_Registrations.csv";
+		boolean headerRetrieved = false;
+		
+		CSVReader reader = null;
+		FileReader sourceFileReader = null;
+	
+		int numDays = 7;
+		do{
+			
+			Date dateStamp = new java.util.Date();
+			dateStamp.setDate(dateStamp.getDate()- numDays);
+			DateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");  
+			
+			String sourceFile="C:/Projects/workspace/Combine_CSV_Files/Requests/Registration." + myformat.format(dateStamp) + ".csv";
+
+			sourceFileReader = new FileReader(sourceFile);
+			
+			reader = new CSVReader(sourceFileReader);
+			
+			if(sourceFileReader != null){
+				
+				headerRetrieved = true;
+				
+				// use FileWriter constructor that specifies open for appending
+				CSVWriter csvOutput = null;
+				try {
+					csvOutput = new CSVWriter(new FileWriter(outputFile, true), ',');
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(headerRetrieved){
+					
+				}
+				else{
+					
+				}
+				
+				
+				
+				
+			}
+			
+			
+			numDays--;
+		}
+		while(numDays > 0);
+		
+
+		
+		// This allows us to skip the header
+		reader.readNext();
+		
+		List<String[]> allElements = reader.readAll();
+		csvOutput.writeAll(allElements);
+		csvOutput.close();
+		
+	}
+}

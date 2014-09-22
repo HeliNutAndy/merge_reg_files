@@ -1,0 +1,41 @@
+package main;
+
+import java.net.MalformedURLException;
+
+import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.SmbException;
+import jcifs.smb.SmbFile;
+
+
+public class NetworkFileHelper {
+	
+	private static NtlmPasswordAuthentication authentication;
+	
+	Logging thisLog;
+	
+	NetworkFileHelper(Logging log){
+		thisLog = log;
+	}
+	
+	public void Connection(String url, String username, String password){
+		
+		authentication = new NtlmPasswordAuthentication(null, "harvardapp\\azaluski", "A2cbs2pm");
+		try {
+			SmbFile dir = new SmbFile(url, authentication);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			thisLog.writeToLog(CSVMergeMonthly.class.getName(), "main", "Monthly merge started.");
+		}
+	}
+
+	public static NtlmPasswordAuthentication getAuthentication() {
+		return authentication;
+	}
+
+	public static void setAuthentication(NtlmPasswordAuthentication authentication) {
+		NetworkFileHelper.authentication = authentication;
+	}
+	
+
+}

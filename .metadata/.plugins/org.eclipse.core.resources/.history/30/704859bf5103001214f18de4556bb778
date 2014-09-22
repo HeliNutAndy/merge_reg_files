@@ -1,0 +1,25 @@
+package main;
+
+import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.SmbException;
+import jcifs.smb.SmbFile;
+
+
+public class NetworkFileHelper {
+	
+	private static NtlmPasswordAuthentication authentication;
+	
+	public void Connection(String Url, String Username, String Password){
+		
+	}
+
+	public static NtlmPasswordAuthentication getAuthentication() {
+		return authentication;
+	}
+
+	public static void setAuthentication(NtlmPasswordAuthentication authentication) {
+		NetworkFileHelper.authentication = authentication;
+	}
+	
+
+}
